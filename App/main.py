@@ -90,21 +90,21 @@ app.layout = dbc.Container(
         ]),  # end of second row
         dbc.Row([  # start of third row
             dbc.Col([  # first column on third row
-                # html.H5('Settings', id='header', className='text-center'),
-                # dcc.Input(
-                #             id="input_iterations",
-                #             type="number",
-                #             placeholder="Iterations (higher=slower calc)",
-                #         ),
-                # dcc.Input(
-                #             id="input_days",
-                #             type="number",
-                #             placeholder="No. of days (default 250)",
-                #         )
-                # # html.Label('', id='lbl_hidden'),
-                # # dcc.Graph(id='chrt-portfolio',
-                # #           # figure=fig_growth2,
-                # #           style={'height': 380}),
+                html.H5('Settings', id='header', className='text-center'),
+                dcc.Input(
+                            id="input_iterations",
+                            type="number",
+                            placeholder="Iterations (higher=slower calc)",
+                        ),
+                dcc.Input(
+                            id="input_days",
+                            type="number",
+                            placeholder="No. of days (default 250)",
+                        )
+                # html.Label('', id='lbl_hidden'),
+                # dcc.Graph(id='chrt-portfolio',
+                #           # figure=fig_growth2,
+                #           style={'height': 380}),
                 ], width={'size': 2, 'offset': 0, 'order': 1}),  # width first column on second row
             dbc.Col([  # first column on third row
                 dcc.Graph(id='chrt_portfolio_equal',
@@ -120,20 +120,38 @@ app.layout = dbc.Container(
 
     ], fluid=True)
 
-# When settings is changed
+# When iterdaysation settings is changed
+@app.callback(
+    Output("header", "children"),
+    [Input("input_days", "value"),
+     Input("input_iterations", "value")],
+)
+def cb_render(value_days, value_iterations):
+    global iterations, days
+    if type(value_days) == int:
+        days= value_days
+    else:
+        days= 250
+
+    if type(value_iterations) == int:
+        iterations= value_iterations
+    else:
+        iterations= 1000
+    print("iterations: "+str(iterations)+" days: "+str(days))
+    return "Settings"
+
+# When days settings is changed
 # @app.callback(
 #     Output("header", "children"),
-#     [Input("input_iterations", "val_iter"),
-#      Input("input_days", "val_days")],
+#     [Input("input_days", "value")],
 # )
-# def changeValues(val_iter, val_days):
-#     global days, iterations
-#     days = val_days
-#     iterations = val_iter
-#     if days == None:
-#         days=250
-#     if iterations == None:
-#         iterations=1000
+# def cb_rendered(value):
+#     global days
+#     if type(value) == int:
+#         days= value
+#     else:
+#         days= 250
+#     return "Settings"
 
 # When a row is selected or deleted
 @app.callback(
