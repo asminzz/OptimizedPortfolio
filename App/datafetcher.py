@@ -76,10 +76,10 @@ def getFrontierData(selected_companies, days, iterations):
         # Save weights
         all_weights[x, :] = weights
         # Expected return
-        ret_arr[x] = np.sum((log_ret.mean() * weights * 252))
+        ret_arr[x] = np.sum((log_ret.mean() * weights * days))
 
         # Expected volatility
-        vol_arr[x] = np.sqrt(np.dot(weights.T, np.dot(log_ret.cov() * 252, weights)))
+        vol_arr[x] = np.sqrt(np.dot(weights.T, np.dot(log_ret.cov() * days, weights)))
 
         # Sharpe Ratio
         sharpe_arr[x] = ret_arr[x] / vol_arr[x]
